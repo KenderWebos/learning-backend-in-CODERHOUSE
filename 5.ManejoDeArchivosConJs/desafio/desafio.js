@@ -6,6 +6,8 @@ class ProductManager{
     constructor(products = [], path = "."){
         this.products = products;
         this.path = path;
+
+        // products = getJsonData();
     }
 
     async getJsonData()
@@ -37,6 +39,8 @@ class ProductManager{
                 code: code,
                 stock: stock
             });
+
+            // setJsonData();
         }
     }
 
@@ -63,11 +67,6 @@ productManager.addProduct("producto prueba", "Este es un producto prueba", 200, 
 console.log(productManager.getProducts());
 
 console.log( productManager.getProductById(1) );
-
-
-
-
-
 
 const testing = {
     title: "producto prueba",
