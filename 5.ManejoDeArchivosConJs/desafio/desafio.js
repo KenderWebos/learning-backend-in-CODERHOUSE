@@ -1,33 +1,23 @@
 const fs = require('fs/promises');
 
-class ProductManager{
+class ProductManager {
     filename = "products.json";
 
-    constructor(products = [], path = "."){
+    constructor(products = [], path = ".") {
         this.products = products;
         this.path = path;
 
-        // products = getJsonData();
+        this.getJsonData().then(data => {
+            this.products = data;
+        });
     }
 
-    async getJsonData()
-    {
-        const data = await fs.readFile(this.path + "/" + this.filename, 'utf-8')
-        return JSON.parse(data);
-    }
-
-    async setJsonData()
-    {
-        await fs.writeFile(this.path + "/" + this.filename, JSON.stringify(this.products));
-    }
-
-    addProduct(title, description, price, thumbnail, code, stock){
+    async addProduct(title, description, price, thumbnail, code, stock) {
         const allInputsNotNull = title && description && price && thumbnail && code && stock;
         const codeIsNotRepeated = !this.products.find(product => product.code === code);
-        
-        if(allInputsNotNull && codeIsNotRepeated)
-        {
-            const id = this.products.length+1;
+
+        if (allInputsNotNull && codeIsNotRepeated) {
+            const id = this.products.length + 1;
 
             this.products.push({
                 id: id,
@@ -40,15 +30,24 @@ class ProductManager{
                 stock: stock
             });
 
-            // setJsonData();
+            await this.setJsonData();
         }
     }
 
-    getProducts(){
+    async getJsonData() {
+        const data = await fs.readFile(this.path + "/" + this.filename, 'utf-8')
+        return JSON.parse(data);
+    }
+
+    async setJsonData() {
+        await fs.writeFile(this.path + "/" + this.filename, JSON.stringify(this.products));
+    }
+
+    getProducts() {
         return this.products;
     }
 
-    getProductById(id){
+    getProductById(id) {
         return this.products.find(product => product.id === id) || "Not found";
     }
 
@@ -66,7 +65,7 @@ productManager.addProduct("producto prueba", "Este es un producto prueba", 200, 
 
 console.log(productManager.getProducts());
 
-console.log( productManager.getProductById(1) );
+console.log(productManager.getProductById(1));
 
 const testing = {
     title: "producto prueba",
