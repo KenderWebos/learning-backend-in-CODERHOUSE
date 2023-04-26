@@ -7,5 +7,6 @@ export default class CartsManager extends JsonContainer {
       filename: "carts",
       validator: createValidator(Products),
     });
+    this.Products = Products;
   }
 }

@@ -1,15 +1,22 @@
 import { Router } from "express";
-import ProductContainer from "../containers/ProductContainer.js";
 import { Products } from "./dependencies.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
-  return res.json(await Products.getItems());
+router.get("/", async (req, res, next) => {
+  try {
+    return res.json(await Products.getItems());
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.get("/:pid", async (req, res) => {
-  return res.json(await Products.getItem(req.params.pid));
+router.get("/:pid", async (req, res, next) => {
+  try {
+    return res.json(await Products.getItem(Number(req.params.pid)));
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post("/", async (req, res, next) => {
@@ -20,17 +27,27 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/:pid", async (req, res) => {
-  return res.json(await Products.updateItem(req.params.pid, req.body));
+router.put("/:pid", async (req, res, next) => {
+  try {
+    return res.json(
+      await Products.updateItem(Number(req.params.pid), req.body, false)
+    );
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.delete("/:pid", async (req, res) => {
-  return res.json(await Products.deleteItem(req.params.pid));
+router.delete("/:pid", async (req, res, next) => {
+  try {
+    return res.json(await Products.deleteItem(Number(req.params.pid)));
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.use((error, req, res, next) => {
   if (error) {
-    res.send({ status: "error", message: error.message });
+    res.send({ message: error.message });
   }
   next();
 });

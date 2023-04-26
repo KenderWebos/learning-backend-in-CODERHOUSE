@@ -4,7 +4,6 @@ import fs from "fs/promises";
 import fss from "fs";
 import path from "path";
 
-
 export default class JsonContainer {
   constructor({
     filename = "default",
@@ -47,15 +46,16 @@ export default class JsonContainer {
       this.validator(item, this.items)
     ) {
       const id = this.items.length + 1;
-      this.items.push({ id, ...item });
+      const data = { id, ...item };
+      this.items.push(data);
       await this.setJsonData();
-      return true;
+      return data;
     }
     throw new Error("No se pudo agregar el item");
   }
 
-  async updateItem(item, replace = true) {
-    const index = this.items.findIndex((x) => x.id == item.id);
+  async updateItem(id, item, replace = true) {
+    const index = this.items.findIndex((x) => x.id == id);
 
     if (index != -1 && replace) {
       // si el indice es -1 es porque no existe el item
@@ -71,16 +71,19 @@ export default class JsonContainer {
     throw new Error("No se pudo actualizar el item o no existe");
   }
 
-  async deleteItem(item) {
-    const index = this.items.findIndex((x) => x.id == item.id);
+  async deleteItem(id) {
+    const index = this.items.findIndex((x) => x.id == id);
 
     if (index != -1) {
       // si el indice es -1 es porque no existe el item
       this.items.splice(index, 1);
       await this.setJsonData();
-      return true;
+      return {
+        message: "El item se elimino correctamente",
+      };
+    } else {
+      throw new Error("No se pudo eliminar el item o no existe");
     }
-    throw new Error("No se pudo eliminar el item o no existe");
   }
 
   async getJsonData() {
@@ -105,7 +108,15 @@ export default class JsonContainer {
     return await this.items;
   }
 
-  async getItemById(id) {
-    return await this.items.find((item) => item.id === id);
+  async getItem(id) {
+    const item = await this.items.find((item) => item.id === id);
+    if (!item) {
+      throw new Error("No existe el item");
+    }
+    return item;
+  }
+
+  hasItem(id) {
+    return this.items.some((item) => item.id === id);
   }
 }
