@@ -1,0 +1,41 @@
+<form id="addProduct">
+  <h1>Agregar producto</h1>
+  <div class="grid">
+    <label for="title">
+      Title
+      <input type="text" name="title" id="title" placeholder="Salad" required aria-required="true" />
+    </label>
+    <label for="price">Price
+      <input type="number" name="price" id="price" placeholder="10" required aria-required="true"/>
+    </label>
+
+    <label for="code">Code
+      <input
+        type="text"
+        name="code"
+        id="code"
+        placeholder="624a523f-b5d2-4d55-ab34-c149edb06e84"
+        required aria-required="true"
+      />
+    </label>
+    <label for="stock">Stock
+      <input type="number" name="stock" id="stock" placeholder="10" />
+    </label>
+  </div>
+  <label for="thumbnail">Thumbnail
+    <input
+      type="text"
+      name="thumbnail"
+      id="thumbnail"
+      placeholder="http://placeimg.com/640/480/food"
+    />
+  </label>
+  <label for="description">Description
+    <input type="text" name="description" id="description" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, facilis, quis nesciunt eaque aliquid suscipit nisi numquam quia optio voluptatum debitis qui beatae? Nobis nulla aperiam mollitia nisi, blanditiis cupiditate!" required aria-required="true"/>
+    
+  </label>
+  <label for="status">Status
+    <input type="checkbox" name="status" id="status" />
+  </label>
+  <input type="submit"></input>
+</form>
